@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { CartProvider, useCart } from './context/CartContext';
 import { WishlistProvider, useWishlist } from './context/WishlistContext';
+import { OrderProvider } from './context/OrderContext';
 import ImageGallery from './components/ImageGallery';
 import VariantSelector from './components/VariantSelector';
 import QuantityCart from './components/QuantityCart';
 import TabbedDetails from './components/TabbedDetails';
 import ReviewRating from './components/ReviewRating';
+import CartDropdown from './components/CartDropdown';
+import OrdersPage from './components/OrdersPage';
 import './App.css';
 
 const PRODUCT = { id: 'premium-watch', name: 'Premium Watch', price: 129.99 };
@@ -12,6 +16,12 @@ const PRODUCT = { id: 'premium-watch', name: 'Premium Watch', price: 129.99 };
 function ProductPage() {
   const { addToCart, cartCount } = useCart();
   const { toggleWishlist, isInWishlist, wishlistCount } = useWishlist();
+  const [cartOpen, setCartOpen] = useState(false);
+  const [showOrders, setShowOrders] = useState(false);
+
+  if (showOrders) {
+    return <OrdersPage onBack={() => setShowOrders(false)} />;
+  }
 
   return (
     <div className="product-page">
@@ -20,15 +30,26 @@ function ProductPage() {
         <div className="header-actions">
           <button
             type="button"
+            className="header-link"
+            onClick={() => setShowOrders(true)}
+          >
+            Orders
+          </button>
+          <button
+            type="button"
             className="wishlist-badge"
             title="Wishlist"
             aria-label={`Wishlist ${wishlistCount} items`}
           >
             ♥ Wishlist {wishlistCount > 0 && <span className="count">{wishlistCount}</span>}
           </button>
-          <div className="cart-badge">
+          <button
+            type="button"
+            className="cart-badge"
+            onClick={() => setCartOpen(true)}
+          >
             Cart {cartCount > 0 && <span className="count">{cartCount}</span>}
-          </div>
+          </button>
         </div>
       </header>
 
@@ -60,17 +81,25 @@ function ProductPage() {
           <ReviewRating />
         </section>
       </main>
+
+      <CartDropdown
+        isOpen={cartOpen}
+        onClose={() => setCartOpen(false)}
+        onOrderPlaced={() => setShowOrders(true)}
+      />
     </div>
   );
 }
 
 function App() {
   return (
-    <CartProvider>
-      <WishlistProvider>
-        <ProductPage />
-      </WishlistProvider>
-    </CartProvider>
+    <OrderProvider>
+      <CartProvider>
+        <WishlistProvider>
+          <ProductPage />
+        </WishlistProvider>
+      </CartProvider>
+    </OrderProvider>
   );
 }
 
