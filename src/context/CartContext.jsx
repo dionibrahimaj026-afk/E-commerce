@@ -2,13 +2,14 @@ import { createContext, useContext, useState } from 'react';
 
 const CartContext = createContext(null);
 
-const PRODUCT = { name: 'Premium Watch', price: 129.99 };
-
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
 
-  const addToCart = (quantity) => {
-    setCartItems((prev) => [...prev, { product: PRODUCT.name, quantity, price: PRODUCT.price }]);
+  const addToCart = (product, quantity) => {
+    setCartItems((prev) => [
+      ...prev,
+      { product: product.name, quantity, price: product.price },
+    ]);
   };
 
   const clearCart = () => setCartItems([]);

@@ -2,22 +2,18 @@ import { useState } from 'react';
 import { CartProvider, useCart } from './context/CartContext';
 import { WishlistProvider, useWishlist } from './context/WishlistContext';
 import { OrderProvider } from './context/OrderContext';
-import ImageGallery from './components/ImageGallery';
-import VariantSelector from './components/VariantSelector';
-import QuantityCart from './components/QuantityCart';
-import TabbedDetails from './components/TabbedDetails';
-import ReviewRating from './components/ReviewRating';
+import ProductCatalog from './components/ProductCatalog';
+import ProductDetail from './components/ProductDetail';
 import CartDropdown from './components/CartDropdown';
 import OrdersPage from './components/OrdersPage';
 import './App.css';
 
-const PRODUCT = { id: 'premium-watch', name: 'Premium Watch', price: 129.99 };
-
 function ProductPage() {
-  const { addToCart, cartCount } = useCart();
-  const { toggleWishlist, isInWishlist, wishlistCount } = useWishlist();
+  const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
   const [cartOpen, setCartOpen] = useState(false);
   const [showOrders, setShowOrders] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   if (showOrders) {
     return <OrdersPage onBack={() => setShowOrders(false)} />;
@@ -53,34 +49,14 @@ function ProductPage() {
         </div>
       </header>
 
-      <main className="product-layout">
-        <section className="product-gallery">
-          <ImageGallery />
-        </section>
-
-        <section className="product-info">
-          <div className="product-title-row">
-            <h2>Premium Watch</h2>
-            <button
-              type="button"
-              className={`wishlist-btn ${isInWishlist(PRODUCT.id) ? 'active' : ''}`}
-              onClick={() => toggleWishlist(PRODUCT)}
-              aria-label={isInWishlist(PRODUCT.id) ? 'Remove from wishlist' : 'Add to wishlist'}
-            >
-              {isInWishlist(PRODUCT.id) ? '♥' : '♡'}
-            </button>
-          </div>
-          <p className="price">$129.99</p>
-
-          <VariantSelector />
-
-          <QuantityCart onAddToCart={addToCart} />
-
-          <TabbedDetails />
-
-          <ReviewRating />
-        </section>
-      </main>
+      {selectedProduct ? (
+        <ProductDetail
+          product={selectedProduct}
+          onBack={() => setSelectedProduct(null)}
+        />
+      ) : (
+        <ProductCatalog onSelectProduct={setSelectedProduct} />
+      )}
 
       <CartDropdown
         isOpen={cartOpen}
