@@ -29,6 +29,28 @@ body {
   font-size: 1.5rem;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.wishlist-badge {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 2px solid #1a1a1a;
+  color: #1a1a1a;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.wishlist-badge:hover {
+  background: #1a1a1a;
+  color: white;
+}
+
 .cart-badge {
   padding: 0.5rem 1rem;
   background: #1a1a1a;
@@ -37,12 +59,57 @@ body {
   font-weight: 600;
 }
 
-.cart-badge .count {
+.cart-badge .count,
+.wishlist-badge .count {
   margin-left: 0.25rem;
   background: #fff;
   color: #1a1a1a;
   padding: 0.1rem 0.4rem;
   border-radius: 4px;
+}
+
+.wishlist-badge .count {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.wishlist-badge:hover .count {
+  background: #fff;
+  color: #1a1a1a;
+}
+
+/* Product wishlist button */
+.product-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.product-title-row h2 {
+  margin: 0;
+}
+
+.wishlist-btn {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 2px solid #ddd;
+  background: #fff;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.wishlist-btn:hover {
+  border-color: #e91e63;
+  color: #e91e63;
+}
+
+.wishlist-btn.active {
+  border-color: #e91e63;
+  color: #e91e63;
 }
 
 /* Product Layout */
@@ -108,8 +175,12 @@ body {
 }
 
 /* Product Info */
+.product-info .product-title-row {
+  margin-bottom: 0.5rem;
+}
+
 .product-info h2 {
-  margin: 0 0 0.5rem;
+  margin: 0;
   font-size: 1.75rem;
 }
 
